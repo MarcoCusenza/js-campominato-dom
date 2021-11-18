@@ -5,6 +5,7 @@ let numBox = 49; //numero totale di box
 let boxPerRow = 7; //numero di box per riga
 let numBombs = 10; //numero totale di bombe
 let buone = numBox - numBombs; //numero di caselle da scoprire
+let perso = false;
 
 const easy = document.querySelector(".easyBtn");
 const medium = document.querySelector(".mediumBtn");
@@ -29,7 +30,7 @@ crazy.addEventListener('click', function () { changeDifficulty(3) });
 
 //_____FUNZIONI_____
 
-// +++ GENERALI +++
+// +++ FUNZIONI GENERALI +++
 //calcolo della posizione dei box in un sistema a matrice
 function positionCalc(row, col) {
     return ((row * boxPerRow) + col)
@@ -39,20 +40,21 @@ function positionCalc(row, col) {
 function destroy(element) {
     element.innerHTML = '';
 }
-// --- GENERALI ---
+// +++ FINE FUNZIONI GENERALI +++
 
 
 
-// +++ SPECIFICHE +++
+// +++ FUNZIONI SPECIFICHE +++
 //Setup gioco
 function setup(grid, numBombs) {
+    destroy(document.getElementById("result"));
     destroy(grid); //svuota la griglia
     fillGrid(); //riempi la griglia
     bombsGenerator(numBombs); //genera e inserisci le bombe
     fillBox(); //riempi i box
 }
 
-//REFACTORING CON SWITCH
+//AAAAA REFACTORING CON SWITCH
 //Cambio difficoltà (--> nuova partita)
 function changeDifficulty(lvl) {
     if (lvl == 0) {//***livello facile
@@ -92,19 +94,23 @@ function fillGrid() {
     for (let i = 0; i < boxPerRow; i++) {
         for (let j = 0; j < boxPerRow; j++) {
             const box = document.createElement('div');
-            box.className = `box box-${positionCalc(i, j)} row-${i} col-${j}`;
+            const overlay = document.createElement('overlay');
+            box.className = `box box-${positionCalc(i, j)}`;
+            overlay.className = `overlay overlay-${positionCalc(i, j)}`;
             grid.appendChild(box);
+            box.appendChild(overlay);
             box.addEventListener('click', function () {//box cliccabili
-                console.log(this);
-                this.classList.add("active");
-                if (this.classList.contains("bomb")) {
-                    endGame();
-                    console.log("FINE");
-                    console.log(box.innerHTML);
-                } else if (buone > 1) {
-                    buone--;
-                } else {
-                    endGame();
+                if (perso == false) {
+                    console.log(this);
+                    this.querySelector("overlay").remove();
+                    if (this.classList.contains("bomb")) {
+                        perso = true;
+                        endGame();
+                    } else if (buone > 1) {
+                        buone--;
+                    } else {
+                        endGame();
+                    }
                 }
             });
         }
@@ -129,19 +135,17 @@ function bombsGenerator(numBombs) {
     }
 }
 
-//DA FARE REFACTORING
 //Riempimento di ogni box con il numero di bombe circostanti
 function fillBox() {
-    console.log("DAJEEEE");
     const arrayBox = document.getElementsByClassName('box');
     for (let i = 0; i < arrayBox.length; i++) {
         let row = parseInt(i / boxPerRow);
         let col = i % boxPerRow;
         // console.log("row =", row, "col =", col);
         if (arrayBox[i].classList.contains("bomb")) {
-            arrayBox[i].innerHTML = '<i class="fas fa-bomb"></i>';
+            arrayBox[i].innerHTML += '<i class="fas fa-bomb"></i>';
         } else {
-            arrayBox[i].innerHTML = numBombsAround(row, col, arrayBox);
+            arrayBox[i].innerHTML += numBombsAround(row, col, arrayBox);
         }
     }
 }
@@ -153,19 +157,15 @@ function numBombsAround(row, col, arrayBox) {
         for (let y = 0; y < 3; y++) {
             let a = (row - 1) + x;
             let b = (col - 1) + y;
-            // console.log("a =", a, "b =", b);
             if (a >= 0 && a < boxPerRow && b >= 0 && b < boxPerRow) {
-                // console.log(arrayBox[positionCalc(a, b)].classList.contains("bomb"));
                 if (arrayBox[positionCalc(a, b)].classList.contains("bomb")) {
                     count++;
-                    // console.log(count);
                 }
             }
         }
     }
     return count;
 }
-
 
 //concludere la partita
 function endGame() {
@@ -179,8 +179,6 @@ function endGame() {
 }
 
 
-
-
-// --- SPECIFICHE ---
+// +++ FINE FUNZIONI SPECIFICHE +++
 
 //_____FINE FUNZIONI_____

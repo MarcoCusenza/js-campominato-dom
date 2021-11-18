@@ -6,8 +6,6 @@
     background-color:rgb(50, 50, 50);
     color: whitesmoke;
     font-family: 'Lato', sans-serif;
-    user-select: none;
-    -webkit-user-select: none;
 }
 
 .clearfix{
@@ -16,8 +14,8 @@
     content: "";
 }
 
-.hidden{
-    display: none;
+.hidden .box{
+    opacity: 0;
 }
 /* /COMMONS */
 
@@ -53,6 +51,8 @@ main h1{
 #grid{
     background-color: rgb(100, 100, 100);
     margin-top: 80px;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 #grid.easyGrid{
@@ -77,19 +77,31 @@ main h1{
 
 .box{
     width: 30px;
-    line-height: 30px;
+    height: 30px;
     background-color: rgb(209, 140, 255);
     border: 1px solid rgb(221, 221, 221);
     float: left;
     color: black;
-    font-size: 25px;
+    font-size: 22px;
     text-align: center;
     cursor: pointer;
+    position: relative;
 }
 
-.bomb{
-    background-color: rgb(174, 253, 233);
+.overlay{
+    width: 30px;
+    height: 30px;
+    background-color: rgb(209, 140, 255);
+    border: 1px solid rgb(221, 221, 221);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 999;
 }
+
+/* .bomb{
+    background-color: rgb(174, 253, 233);
+} */
 
 .bomb i{
     color: rgb(50, 50, 50);
@@ -97,7 +109,7 @@ main h1{
 }
 
 .active{
-    background-color: rgb(110, 110, 255);
+    background-color: ;
 }
 
 #result{
