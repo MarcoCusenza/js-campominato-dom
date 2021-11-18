@@ -40,6 +40,16 @@ function positionCalc(row, col) {
 function destroy(element) {
     element.innerHTML = '';
 }
+
+//dato l'elemento trova la sua riga DA 0 A 6
+function getRow(element) {
+    return (parseInt(element / boxPerRow))
+}
+
+//dato l'elemento trova la sua colonna DA 0 A 6
+function getCol(element) {
+    return (element % boxPerRow)
+}
 // +++ FINE FUNZIONI GENERALI +++
 
 
@@ -52,6 +62,7 @@ function setup(grid, numBombs) {
     fillGrid(); //riempi la griglia
     bombsGenerator(numBombs); //genera e inserisci le bombe
     fillBox(); //riempi i box
+    perso = false;
 }
 
 //AAAAA REFACTORING CON SWITCH
@@ -95,24 +106,51 @@ function fillGrid() {
         for (let j = 0; j < boxPerRow; j++) {
             const box = document.createElement('div');
             const overlay = document.createElement('overlay');
-            box.className = `box box-${positionCalc(i, j)}`;
-            overlay.className = `overlay overlay-${positionCalc(i, j)}`;
+            box.className = `box ${positionCalc(i, j)}`;
+            overlay.className = `overlay ${positionCalc(i, j)}`;
             grid.appendChild(box);
             box.appendChild(overlay);
             box.addEventListener('click', function () {//box cliccabili
                 if (perso == false) {
                     console.log(this);
-                    this.querySelector("overlay").remove();
+                    this.querySelector("overlay").classList.add("hidden");
                     if (this.classList.contains("bomb")) {
                         perso = true;
                         endGame();
                     } else if (buone > 1) {
                         buone--;
+                        let pos = this.innerHTML.length - 1;//accrocchio per vedere se c'è scritto 0 nel box
+                        if (this.innerHTML[pos] == '0') {
+                            console.log("ENTRO NELL'IF = 0");
+                            showAround(i, j);
+                        }
                     } else {
                         endGame();
                     }
                 }
             });
+        }
+    }
+}
+
+//showAround
+function showAround(row, col) {
+    console.log("RICOMINCIO SHOWAROUND CON", row, col);
+    const arrayBox = document.getElementsByClassName('box');
+    arrayBox[positionCalc(row, col)].classList.add("check");
+    console.log("row", row);
+    console.log("col", col);
+    for (let x = -1; x < 2; x++) {
+        for (let y = -1; y < 2; y++) {
+            let a = row + x;
+            let b = col + y;
+            let box = arrayBox[positionCalc(a, b)];
+            if (a >= 0 && a < boxPerRow && b >= 0 && b < boxPerRow) {
+                box.querySelector("overlay").classList.add("hidden");
+                if (box.innerHTML[box.innerHTML.length - 1] == "0" && !(box.classList.contains("check"))) {
+                    showAround(a, b);
+                }
+            }
         }
     }
 }
@@ -129,7 +167,6 @@ function bombsGenerator(numBombs) {
             array[i] = token;
         }
     }
-
     for (let j = 0; j < numBombs; j++) {
         arrayBox[array[j]].classList.add("bomb");//prendo i box che hanno indice array[j]
     }
@@ -139,9 +176,8 @@ function bombsGenerator(numBombs) {
 function fillBox() {
     const arrayBox = document.getElementsByClassName('box');
     for (let i = 0; i < arrayBox.length; i++) {
-        let row = parseInt(i / boxPerRow);
-        let col = i % boxPerRow;
-        // console.log("row =", row, "col =", col);
+        let row = getRow(i) - 1;
+        let col = getCol(i) - 1;
         if (arrayBox[i].classList.contains("bomb")) {
             arrayBox[i].innerHTML += '<i class="fas fa-bomb"></i>';
         } else {
@@ -155,8 +191,8 @@ function numBombsAround(row, col, arrayBox) {
     let count = 0;
     for (let x = 0; x < 3; x++) {
         for (let y = 0; y < 3; y++) {
-            let a = (row - 1) + x;
-            let b = (col - 1) + y;
+            let a = row + x;
+            let b = col + y;
             if (a >= 0 && a < boxPerRow && b >= 0 && b < boxPerRow) {
                 if (arrayBox[positionCalc(a, b)].classList.contains("bomb")) {
                     count++;
@@ -182,3 +218,5 @@ function endGame() {
 // +++ FINE FUNZIONI SPECIFICHE +++
 
 //_____FINE FUNZIONI_____
+
+

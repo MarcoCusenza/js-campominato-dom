@@ -14,8 +14,8 @@
     content: "";
 }
 
-.hidden .box{
-    opacity: 0;
+.hidden{
+    background: transparent !important;
 }
 /* /COMMONS */
 
@@ -89,10 +89,9 @@ main h1{
 }
 
 .overlay{
-    width: 30px;
-    height: 30px;
+    width: 100%;
+    height: 100%;
     background-color: rgb(209, 140, 255);
-    border: 1px solid rgb(221, 221, 221);
     position: absolute;
     top: 0;
     left: 0;
