@@ -3,9 +3,15 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color:rgb(50, 50, 50);
     color: whitesmoke;
     font-family: 'Lato', sans-serif;
+}
+
+body{
+    background-image: url("../img/wp3.jpg");
+    background-size: cover;
+    background-position: center;
+    position: relative;
 }
 
 .clearfix{
@@ -22,13 +28,19 @@
 /* HEADER */
 header{
     height: 80px;
-    background-color: rgb(31, 31, 31);
+    width: 470px;
+    background-color: rgba(36, 36, 36, 0.397);
+    border-radius: 20px;
+    margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    top: 10px;
 }
 
 header button{
+    background-color: #b473f6;
     font-size: 20px;
     border-radius: 10px;
     margin: 0 10px;
@@ -39,6 +51,8 @@ header button{
 
 /* MAIN */
 main{
+    height: 80vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -49,8 +63,8 @@ main h1{
 }
 
 #grid{
-    background-color: rgb(100, 100, 100);
     margin-top: 80px;
+    border-radius: 10px;
     user-select: none;
     -webkit-user-select: none;
 }
@@ -78,20 +92,21 @@ main h1{
 .box{
     width: 30px;
     height: 30px;
-    background-color: rgb(209, 140, 255);
-    border: 1px solid rgb(221, 221, 221);
+    background-color: #e5328f;
     float: left;
-    color: black;
+    color: whitesmoke;
     font-size: 22px;
     text-align: center;
     cursor: pointer;
     position: relative;
+    border-radius: 5px;
 }
 
 .overlay{
     width: 100%;
     height: 100%;
-    background-color: rgb(209, 140, 255);
+    background-color: #b473f6;
+    border: 1px solid rgba(255, 255, 255, 0.431);
     position: absolute;
     top: 0;
     left: 0;
@@ -107,11 +122,14 @@ main h1{
     background: none;
 }
 
-.active{
-    background-color: ;
-}
-
 #result{
     font-size: 40px;
+    animation: bw 1s infinite;
+}
+
+@keyframes bw {
+    50% {color: whitesmoke;}
+    51% {color: black;}
+    99% {color: black;}
 }
 /* /MAIN */

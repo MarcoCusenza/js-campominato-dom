@@ -13,7 +13,7 @@ const hard = document.querySelector(".hardBtn");
 const crazy = document.querySelector(".crazyBtn");
 
 //Inizializzazione griglia modalità easy
-changeDifficulty(0);
+changeDifficulty(2);
 
 
 //Check cambio difficoltà --> nuova partita
