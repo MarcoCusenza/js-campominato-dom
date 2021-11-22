@@ -196,6 +196,10 @@ li:focus-within a {
     outline: none;
 }
 
+#howto{
+    cursor: pointer;
+}
+
 ul li ul {
     visibility: hidden;
     opacity: 0;
