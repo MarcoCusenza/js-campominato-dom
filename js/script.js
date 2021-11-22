@@ -117,7 +117,7 @@ function fillGrid() {
             box.appendChild(number);
             grid.appendChild(box);
             box.addEventListener('click', function () {//box cliccabili
-                if (perso == false) {
+                if (perso == false && isFlagged(flag) == false) {
                     console.log(this);
                     this.querySelector("number").classList.remove("hidden");
                     if (this.classList.contains("bomb")) {
