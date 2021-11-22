@@ -25,9 +25,6 @@ crazy.addEventListener('click', function () { changeDifficulty(3) });
 //*****FINE PROGRAMMA*****
 
 
-
-
-
 //_____FUNZIONI_____
 
 // +++ FUNZIONI GENERALI +++
@@ -86,7 +83,7 @@ function changeDifficulty(lvl) {
     } else if (lvl == 2) {//***livello difficile
         numBox = 225;
         boxPerRow = 15;
-        numBombs = 50;
+        numBombs = 40;
         buone = numBox - numBombs;
         grid.className = "hardGrid";
         setup(grid, numBombs);
@@ -105,49 +102,119 @@ function fillGrid() {
     for (let i = 0; i < boxPerRow; i++) {
         for (let j = 0; j < boxPerRow; j++) {
             const box = document.createElement('div');
-            const overlay = document.createElement('overlay');
+            const number = document.createElement('number');
+            const flag = document.createElement('flag');
+            flag.innerHTML = `<i class="fas fa-flag"></i>`;
             box.className = `box ${positionCalc(i, j)}`;
-            overlay.className = `overlay ${positionCalc(i, j)}`;
+            number.className = `number ${positionCalc(i, j)} hidden`;
+            flag.className = `flag ${positionCalc(i, j)} hidden`;
+            box.appendChild(flag);
+            box.appendChild(number);
             grid.appendChild(box);
-            box.appendChild(overlay);
             box.addEventListener('click', function () {//box cliccabili
                 if (perso == false) {
                     console.log(this);
-                    this.querySelector("overlay").classList.add("hidden");
+                    this.querySelector("number").classList.remove("hidden");
                     if (this.classList.contains("bomb")) {
                         perso = true;
                         endGame();
                     } else if (buone > 1) {
-                        buone--;
-                        let pos = this.innerHTML.length - 1;//accrocchio per vedere se c'è scritto 0 nel box
-                        if (this.innerHTML[pos] == '0') {
+                        if (this.classList.contains("clicked") == false) {
+                            buone--;
+                        }
+                        console.log("controlla", this.querySelector("number").innerHTML)
+                        if (this.querySelector("number").innerHTML == '0') {
                             console.log("ENTRO NELL'IF = 0");
                             showAround(i, j);
+                            buone = boxLeft();
                         }
-                    } else {
+                        console.log(buone);
+                    } else if (!(this.classList.contains("clicked"))) {
                         endGame();
                     }
+                    this.classList.add("clicked");
                 }
             });
+            box.addEventListener('contextmenu', function (ev) {//tasto destro bandierina
+                ev.preventDefault();
+                if (isFlagged(flag) == false && this.querySelector("number").classList.contains("hidden")) {
+                    putFlag(flag);
+                } else {
+                    removeFlag(flag);
+                }
+                return false;
+            }, false);
         }
     }
 }
 
+//aggiungi bandierina
+function putFlag(flag) {
+    flag.classList.remove("hidden");
+    console.log(flag);
+}
+
+//rimuovi bandierina
+function removeFlag(flag) {
+    flag.classList.add("hidden");
+    console.log(flag);
+}
+
+//verifica se c'è la bandierina
+function isFlagged(el) {
+    if (el.classList.contains("hidden")) {
+        return false;
+    }
+    return true;
+}
+
+//Riempimento di ogni box con il numero di bombe circostanti
+function fillBox() {
+    const arrayBox = document.getElementsByClassName('box');
+    const arrayNumbers = document.getElementsByClassName('number');
+    for (let i = 0; i < arrayBox.length; i++) {
+        let row = getRow(i) - 1;
+        let col = getCol(i) - 1;
+        if (arrayBox[i].classList.contains("bomb")) {
+            arrayNumbers[i].innerHTML = '<i class="fas fa-bomb"></i>';
+        } else {
+            arrayNumbers[i].innerHTML = numBombsAround(row, col, arrayBox);
+        }
+    }
+}
+
+//calcolo di quante bombe ci sono intorno al box[row, col]
+function numBombsAround(row, col, arrayBox) {
+    let count = 0;
+    for (let x = 0; x < 3; x++) {
+        for (let y = 0; y < 3; y++) {
+            let a = row + x;
+            let b = col + y;
+            if (a >= 0 && a < boxPerRow && b >= 0 && b < boxPerRow) {
+                if (arrayBox[positionCalc(a, b)].classList.contains("bomb")) {
+                    count++;
+                }
+            }
+        }
+    }
+    return count;
+}
+
 //showAround
 function showAround(row, col) {
-    console.log("RICOMINCIO SHOWAROUND CON", row, col);
     const arrayBox = document.getElementsByClassName('box');
+    const arrayNumbers = document.getElementsByClassName('number');
     arrayBox[positionCalc(row, col)].classList.add("check");
-    console.log("row", row);
-    console.log("col", col);
     for (let x = -1; x < 2; x++) {
         for (let y = -1; y < 2; y++) {
             let a = row + x;
             let b = col + y;
             let box = arrayBox[positionCalc(a, b)];
             if (a >= 0 && a < boxPerRow && b >= 0 && b < boxPerRow) {
-                box.querySelector("overlay").classList.add("hidden");
-                if (box.innerHTML[box.innerHTML.length - 1] == "0" && !(box.classList.contains("check"))) {
+                arrayNumbers[positionCalc(a, b)].classList.remove("hidden");
+                arrayBox[positionCalc(a, b)].classList.add("clicked");
+                console.log(arrayNumbers[positionCalc(a, b)]);
+                if (arrayNumbers[positionCalc(a, b)].innerHTML == "0" && !(box.classList.contains("check"))) {
                     showAround(a, b);
                 }
             }
@@ -172,35 +239,19 @@ function bombsGenerator(numBombs) {
     }
 }
 
-//Riempimento di ogni box con il numero di bombe circostanti
-function fillBox() {
+//contare quante caselle non scoperte sono rimaste (dopo funzione ricorsiva)
+function boxLeft() {
     const arrayBox = document.getElementsByClassName('box');
-    for (let i = 0; i < arrayBox.length; i++) {
-        let row = getRow(i) - 1;
-        let col = getCol(i) - 1;
-        if (arrayBox[i].classList.contains("bomb")) {
-            arrayBox[i].innerHTML += '<i class="fas fa-bomb"></i>';
-        } else {
-            arrayBox[i].innerHTML += numBombsAround(row, col, arrayBox);
-        }
-    }
-}
-
-//calcolo di quante bombe ci sono intorno al box[row, col]
-function numBombsAround(row, col, arrayBox) {
     let count = 0;
-    for (let x = 0; x < 3; x++) {
-        for (let y = 0; y < 3; y++) {
-            let a = row + x;
-            let b = col + y;
-            if (a >= 0 && a < boxPerRow && b >= 0 && b < boxPerRow) {
-                if (arrayBox[positionCalc(a, b)].classList.contains("bomb")) {
-                    count++;
-                }
-            }
+    for (let i = 0; i < arrayBox.length; i++) {
+        if (arrayBox[i].classList.contains("clicked")) {
+            count++;
+            console.log("count =", count);
         }
     }
-    return count;
+    let tot = arrayBox.length - numBombs - count;
+    console.log("tot =", tot);
+    return (tot);
 }
 
 //concludere la partita
