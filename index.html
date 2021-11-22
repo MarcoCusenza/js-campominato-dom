@@ -10,7 +10,8 @@
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <!-- CDN Fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -24,14 +25,55 @@
 <body>
 
     <header>
-        <button class="easyBtn">Easy</button>
-        <button class="mediumBtn">Medium</button>
-        <button class="hardBtn">Hard</button>
-        <button class="crazyBtn">Crazy</button>
+        <div id="header-left">
+            <ul id="lista-outer">
+                <li><a href="#" aria-haspopup="true">Come si gioca?</a>
+                    <ul id="lista-inner" class="dropdown" aria-label="submenu">
+                        <li><a href="#">1. Clicca su una casella e scoprila</a></li>
+                        <li><a href="#">2. Se trovi una bomba perdi la partita, se invece trovi un numero la partita
+                                continua</a></li>
+                        <li><a href="#">3. Il numero che appare nella casella indica quante bombe sono presenti nelle 8
+                                caselle adiacenti a quella scoperta</a></li>
+                        <li><a href="#">4. Vinci la partita se scopri tutte le caselle senza trovare neanche una
+                                bomba.</a></li>
+                        <li><a href="#">5. Con il tasto desto puoi posizionare delle bandierine per segnalare la
+                                posizione di una bomba</a></li>
+                        <li><a target="_blank" href="https://it.wikipedia.org/wiki/Campo_minato_(videogioco)">Scopri di
+                                più</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div id="header-central">
+            <button class="easyBtn">Easy</button>
+            <button class="mediumBtn">Medium</button>
+            <button class="hardBtn">Hard</button>
+            <button class="crazyBtn">Crazy</button>
+        </div>
+        <div id="header-right">
+            <ul id="lista-outer">
+                <li><a href="#" aria-haspopup="true">How to Play?</a>
+                    <ul id="lista-inner" class="dropdown" aria-label="submenu">
+                        <li><a href="#">1. Click on a box and discover the content</a></li>
+                        <li><a href="#">2. If you find a bomb you lose the game, if you find a number the game
+                                continues</a></li>
+                        <li><a href="#">3. The number that appears in the box indicates how many bombs are present in
+                                the 8 boxes adjacent to the selected one</a></li>
+                        <li><a href="#">4. You win the game if you uncover all the boxes without finding a single
+                                bomb</a></li>
+                        <li><a href="#">5. With the right button you can place flags to indicate the location of a
+                                bomb</a></li>
+                        <li><a target="_blank" href="https://en.wikipedia.org/wiki/Minesweeper_(video_game)">Find out
+                                more</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </header>
 
     <main>
-        <h1>Campo Minato - The Real Game</h1>
+        <h1>Campo Minato</h1>
+        <h4>The Game</h4>
         <div id="grid" class="clearfix"></div>
         <div id="result" class="hidden"></div>
     </main>

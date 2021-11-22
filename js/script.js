@@ -38,12 +38,12 @@ function destroy(element) {
     element.innerHTML = '';
 }
 
-//dato l'elemento trova la sua riga DA 0 A 6
+//dato l'elemento trova la sua riga (quadrati row = col)
 function getRow(element) {
     return (parseInt(element / boxPerRow))
 }
 
-//dato l'elemento trova la sua colonna DA 0 A 6
+//dato l'elemento trova la sua colonna (quadrati row = col)
 function getCol(element) {
     return (element % boxPerRow)
 }
@@ -124,7 +124,6 @@ function fillGrid() {
                         }
                         console.log("controlla", this.querySelector("number").innerHTML)
                         if (this.querySelector("number").innerHTML == '0') {
-                            console.log("ENTRO NELL'IF = 0");
                             showAround(i, j);
                             buone = boxLeft();
                         }
@@ -179,6 +178,36 @@ function fillBox() {
             arrayNumbers[i].innerHTML = '<i class="fas fa-bomb"></i>';
         } else {
             arrayNumbers[i].innerHTML = numBombsAround(row, col, arrayBox);
+
+            switch (numBombsAround(row, col, arrayBox)) {
+                case 0:
+                    arrayNumbers[i].classList.add("zero");
+                    break;
+                case 1:
+                    arrayNumbers[i].classList.add("one");
+                    break;
+                case 2:
+                    arrayNumbers[i].classList.add("two");
+                    break;
+                case 3:
+                    arrayNumbers[i].classList.add("three");
+                    break;
+                case 4:
+                    arrayNumbers[i].classList.add("four");
+                    break;
+                case 5:
+                    arrayNumbers[i].classList.add("five");
+                    break;
+                case 6:
+                    arrayNumbers[i].classList.add("six");
+                    break;
+                case 7:
+                    arrayNumbers[i].classList.add("seven");
+                    break;
+                case 8:
+                    arrayNumbers[i].classList.add("eight");
+                    break;
+            }
         }
     }
 }
@@ -269,5 +298,3 @@ function endGame() {
 // +++ FINE FUNZIONI SPECIFICHE +++
 
 //_____FINE FUNZIONI_____
-
-
