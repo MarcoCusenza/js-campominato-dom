@@ -9,8 +9,6 @@ let perso = false;
 
 const boxMancanti = document.getElementById("buone");
 
-
-
 const easy = document.querySelector(".easyBtn");
 const medium = document.querySelector(".mediumBtn");
 const hard = document.querySelector(".hardBtn");

@@ -103,6 +103,10 @@ main h1{
     animation: bw 1s infinite;
 }
 
+#buone{
+    padding-top: 30px;
+}
+
 @keyframes bw {
     50% {color: whitesmoke;}
     51% {color: black;}
@@ -167,7 +171,7 @@ ul {
 
 li {
     color: #fff;
-    background: #b473f6;;
+    background: #b473f6;
     display: block;
     float: left;
     position: relative;
@@ -176,17 +180,16 @@ li {
     font-size: 18px;
     border-radius: 10px;
     padding: 5px 10px 5px 10px;
-    cursor: pointer;
 }
   
 li a {
     color: #fff;
+    cursor: default;
 }
 
 li:hover,
 li:focus-within {
     background: #e5328f;
-    cursor: pointer;
 }
 
 li:focus-within a {
@@ -199,7 +202,7 @@ ul li ul {
     min-width: 5rem;
     position: absolute;
     transition: all 0.5s ease;
-    margin-top: 1rem;
+    margin-top: 10px;
     left: 0;
 }
 
@@ -215,5 +218,14 @@ ul li ul:focus {
 ul li ul li {
     clear: both;
     width: 100%;
+}
+
+ul li ul li:last-of-type{
+    background-color: #7940b3;
+    cursor: pointer;
+}
+
+ul li ul li:last-of-type a{
+    cursor: pointer;
 }
 /* /HEADER */
