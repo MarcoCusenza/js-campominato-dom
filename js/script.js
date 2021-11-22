@@ -7,6 +7,10 @@ let numBombs = 10; //numero totale di bombe
 let buone = numBox - numBombs; //numero di caselle da scoprire
 let perso = false;
 
+const boxMancanti = document.getElementById("buone");
+
+
+
 const easy = document.querySelector(".easyBtn");
 const medium = document.querySelector(".mediumBtn");
 const hard = document.querySelector(".hardBtn");
@@ -60,6 +64,7 @@ function setup(grid, numBombs) {
     bombsGenerator(numBombs); //genera e inserisci le bombe
     fillBox(); //riempi i box
     perso = false;
+    boxMancanti.innerHTML = `Box left: ${boxLeft()}`;//refresh box left
 }
 
 //AAAAA REFACTORING CON SWITCH
@@ -121,11 +126,13 @@ function fillGrid() {
                     } else if (buone > 1) {
                         if (this.classList.contains("clicked") == false) {
                             buone--;
+                            boxMancanti.innerHTML = `Box left: ${buone}`;//refresh box left
                         }
                         console.log("controlla", this.querySelector("number").innerHTML)
                         if (this.querySelector("number").innerHTML == '0') {
                             showAround(i, j);
                             buone = boxLeft();
+                            boxMancanti.innerHTML = `Box left: ${boxLeft()}`;//refresh box left
                         }
                         console.log(buone);
                     } else if (!(this.classList.contains("clicked"))) {
